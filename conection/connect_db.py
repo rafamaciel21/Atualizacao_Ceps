@@ -1,38 +1,25 @@
-import ibm_db
-import ibm_db_dbi
-import pandas as pd
-from datetime import datetime
 import os
-from dotenv import load_dotenv
+os.add_dll_directory(r"C:\\Program Files\\IBM\\SQLLIB\\BIN")  # Ajuste o caminho para o local correto
+os.environ["DB2CODEPAGE"] = "1252"
+import ibm_db
+import traceback
 
-# Carrega as variáveis de ambiente do arquivo .env
-load_dotenv()
-
-def get_db2_connection():
+def conexao_db():
+    # Informações de conexão
+    dsn = (
+        "DATABASE=CISSERP;"
+        "HOSTNAME=172.29.232.220;"
+        "PORT=50123;"
+        "PROTOCOL=TCPIP;"
+        "UID=dba;"
+        "PWD=a9d9p8.E10;" 
+    )
     try:
-        # Obtém as credenciais do ambiente
-        DB_HOST = os.getenv('DB_HOST')
-        DB_PORT = os.getenv('DB_PORT')
-        DB_NAME = os.getenv('DB_NAME')
-        DB_USER = os.getenv('DB_USER')
-        DB_PASSWORD = os.getenv('DB_PASSWORD')
-
-        # String de conexão
-        conn_string = (
-            f"DATABASE={DB_NAME};"
-            f"HOSTNAME={DB_HOST};"
-            f"PORT={DB_PORT};"
-            f"PROTOCOL=TCPIP;"
-            f"UID={DB_USER};"
-            f"PWD={DB_PASSWORD};"
-        )
-
-        # Estabelece a conexão
-        ibm_conn = ibm_db.connect(conn_string, "", "")
-        conn = ibm_db_dbi.Connection(ibm_conn)
-        
+        conn = ibm_db.connect(dsn, "", "")
+        print("Conexao estabelecida com sucesso.")
         return conn
-
     except Exception as e:
-        print(f"Erro ao conectar ao banco de dados: {str(e)}")
+        print(f"Erro ao conectar ao banco de dados: {e}")
+        traceback.print_exc() # detalhes do erro
         return None
+    
