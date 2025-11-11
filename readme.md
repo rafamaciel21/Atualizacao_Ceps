@@ -1,3 +1,4 @@
+# Em construção!! 
 # Passos de execução 
 
 ### O Presente script tem como objetivo atualizar os CEPs da base de dados com base em arquivos disponibilizados da base de dados dos Correios 
